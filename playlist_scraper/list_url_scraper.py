@@ -30,6 +30,9 @@ def get_playlist_urls(scraper, options = {}):
         href_lookup = playlist_main_container.find_elements('xpath', '//a[contains(@href, "/watch?")]')
         for href in href_lookup:
             url = href.get_attribute('href')
+            if url.partition("&list=")[0] in url_list:
+                #make sure we're not repeating the same url
+                continue
             print(f'found url: {url}')
             url_list.append(url.partition("&list=")[0]) #getting only URL without list indicator
     except:
@@ -43,7 +46,7 @@ def get_playlist_urls(scraper, options = {}):
 def main():
     scraper = WebDriverTorso(params)
     get_playlist_urls(scraper, options)
-    scraper.finis()
+    scraper.finish()
 
 
 if __name__ == "__main__":
